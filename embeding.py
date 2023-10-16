@@ -16,7 +16,7 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.chains import RetrievalQA
 
 from langchain.document_loaders import UnstructuredPDFLoader, OnlinePDFLoader, PyPDFLoader
-from dotenv import load_dotenv
+from dotenv import load_dotenv, dotenv_values
 
 print("loading files")
 text_splitter = RecursiveCharacterTextSplitter(
@@ -35,7 +35,13 @@ text_splitter = RecursiveCharacterTextSplitter(
 texts = text_splitter.split_documents(documents)
 print("done splitting files: ", len(texts), "texts")
 
-load_dotenv()
+# config = {
+#     **dotenv_values(".env"),  # load shared development variables
+#     **dotenv_values(".env.local"),  # load sensitive variables
+#     **os.environ,  # override loaded values with environment variables
+# }
+
+load_dotenv(".env.local")
 
 PINECONE_API_KEY = os.getenv('PINECONE_API_KEY')
 PINECONE_ENV = os.getenv('PINECONE_ENV')
