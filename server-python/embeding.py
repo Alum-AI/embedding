@@ -82,7 +82,8 @@ qa_chain = RetrievalQA.from_chain_type(llm=llm,
                                        return_source_documents=True)
 
 query = "Tell me about Alieen Zhang in the pdf file."
-
 response = qa_chain(query)
+
+# response = qa_chain(query2)
 
 parse_response(response)
