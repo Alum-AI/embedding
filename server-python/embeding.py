@@ -4,18 +4,17 @@ import langchain
 import pinecone
 
 
-from langchain.document_loaders import DirectoryLoader, TextLoader, UnstructuredPDFLoader, OnlinePDFLoader, PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import Pinecone
-
-from langchain.llms import OpenAI
-
+from langchain_openai import OpenAIEmbeddings
 from langchain.chains.question_answering import load_qa_chain
 from langchain.chains import RetrievalQA
 
-from langchain.document_loaders import UnstructuredPDFLoader, OnlinePDFLoader, PyPDFLoader
+from langchain_community.document_loaders import DirectoryLoader
+from langchain_community.vectorstores import Pinecone
+from langchain_openai import OpenAI
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders.csv_loader import CSVLoader
+
 from dotenv import load_dotenv, dotenv_values
 
 print("loading files")
@@ -26,7 +25,7 @@ text_splitter = RecursiveCharacterTextSplitter(
     length_function=len,
 )
 
-loader = DirectoryLoader('./data', glob="./prod/*.pdf", loader_cls=PyPDFLoader)
+loader = DirectoryLoader('./data', glob="./dev/*.csv", loader_cls=CSVLoader)
 documents = loader.load()
 
 print("splitting files")
@@ -81,7 +80,7 @@ qa_chain = RetrievalQA.from_chain_type(llm=llm,
                                        retriever=retriever,
                                        return_source_documents=True)
 
-query = "Tell me about Alieen Zhang in the pdf file."
+query = "What is the id of Leiden University in the pdf file."
 response = qa_chain(query)
 
 # response = qa_chain(query2)
