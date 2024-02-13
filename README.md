@@ -18,6 +18,8 @@ Retrive content from the Embedding vector database
 
 ![image](https://github.com/Alum-AI/rag/assets/1519232/8e39e177-6b07-4d31-8998-2233f6e69828)
 
+![image](https://github.com/Alum-AI/rag/assets/1519232/80a67686-2b18-4d27-b034-ca48b8492c2d)
+
 Full content of video
 
 https://www.youtube.com/watch?v=orLGv2LgWDE
