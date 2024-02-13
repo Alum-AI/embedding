@@ -1,4 +1,4 @@
-# Education Platform
+# Embedding
 
 ## Get Started
 
