@@ -10,6 +10,7 @@ from langchain_openai import OpenAIEmbeddings, OpenAI
 from langchain.chains import LLMChain
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
+from langchain.chains import RetrievalQA
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 print("loading files")
@@ -78,35 +79,27 @@ retriever = db.as_retriever()
 # response = llm_chain(prompt)
 
 # print(qa_chain("Tell me who is Alieen-Zhang"))
-db = Chroma.from_documents(documents, embedding)
-prompt = """
-Based on the resume in the pdf files, acocorign to my profile
-
-    ```
-    Geroge Washington High School
-    Intreated in: Computer, Art, Science
-    Targeting Career in: Scientist
-    Targeted location in: California
-    ```
-
-    suggestion schools?
-"""
-response = db.similarity_search(prompt)
+# db = Chroma.from_documents(documents, embedding)
+# prompt = """
+# I am looking for universities with Bachelors in Mechanical engineering in 25000 dollars and IELTS 6.5
+# """
+# response = db.similarity_search(prompt)
 
 # json_formatted_str = json.dumps(docs_dict, indent=2)
-docs_dict = [{"page_content": doc.page_content,
-              "metadata": doc.metadata} for doc in response]
-response_docs = json.dumps(docs_dict, indent=2)
+# docs_dict = [{"page_content": doc.page_content,
+#               "metadata": doc.metadata} for doc in response]
+# response_docs = json.dumps(docs_dict, indent=2)
 
-print(response_docs)
-
-prompt_template = "```{schools}``` ```{prompt}``` Generate the school list and future salary for each school."
+# print(response_docs)
 
 llm = OpenAI(temperature=0)
-llm_chain = LLMChain(
-    llm=llm,
-    prompt=PromptTemplate.from_template(prompt_template)
-)
 
+qa_chain = RetrievalQA.from_chain_type(llm=llm,
+                                       chain_type="stuff",
+                                       retriever=retriever,
+                                       return_source_documents=True)
 
-print(llm_chain.predict(schools=response_docs, prompt=prompt))
+# query = "What is the id of Leiden University in the pdf file."
+query = "I am looking for universities with Bachelors in Mechanical engineering in 25000 dollars and IELTS 6.5"
+response = qa_chain(query)
+print(response['result'])
