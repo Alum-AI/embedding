@@ -3,19 +3,16 @@ import openai
 import langchain
 import pinecone
 
-
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
-from langchain.chains.question_answering import load_qa_chain
-from langchain.chains import RetrievalQA
-
+from dotenv import load_dotenv, dotenv_values
 from langchain_community.document_loaders import DirectoryLoader
-from langchain_community.vectorstores import Pinecone
-from langchain_openai import OpenAI
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders.csv_loader import CSVLoader
-
-from dotenv import load_dotenv, dotenv_values
+from langchain_community.vectorstores import Pinecone
+from langchain_openai import OpenAI
+from langchain_openai import OpenAIEmbeddings
+from langchain.chains import RetrievalQA
+from langchain.chains.question_answering import load_qa_chain
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 print("loading files")
 text_splitter = RecursiveCharacterTextSplitter(
